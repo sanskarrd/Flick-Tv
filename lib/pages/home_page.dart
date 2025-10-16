@@ -3,7 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/video_bloc.dart';
 import '../bloc/video_state.dart';
 import '../widgets/horizontal_carousel.dart';
+import '../widgets/flicktv_logo.dart';
+import '../util/strings.dart';
 import 'player_page.dart';
+import 'search_page.dart';
+import 'profile_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -28,7 +32,7 @@ class _HomePageState extends State<HomePage> {
           if (state is VideoError) {
             return Center(
               child: Text(
-                'Error: ${state.message}',
+                '${Strings.error}: ${state.message}',
                 style: const TextStyle(color: Colors.white),
               ),
             );
@@ -59,28 +63,47 @@ class _HomePageState extends State<HomePage> {
                   ),
                   title: Row(
                     children: [
-                      Text(
-                        'FLICKTV',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: const Color(0xFFE50914),
-                          letterSpacing: 2,
-                        ),
+                      // Netflix-style logo using custom widget
+                      const FlickTVLogo(
+                        fontSize: 26,
+                        style: LogoStyle.gradient,
                       ),
                       const Spacer(),
-                      IconButton(
-                        icon: const Icon(Icons.search, color: Colors.white),
-                        onPressed: () {
-                          // TODO: Implement search
-                        },
+                      // Netflix-style navigation icons
+                      Container(
+                        margin: const EdgeInsets.only(right: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.search,
+                              color: Colors.white, size: 22),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const SearchPage(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.account_circle,
-                            color: Colors.white),
-                        onPressed: () {
-                          // TODO: Implement profile
-                        },
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.2),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: IconButton(
+                          icon: const Icon(Icons.account_circle,
+                              color: Colors.white, size: 22),
+                          onPressed: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const ProfilePage(),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ],
                   ),
@@ -95,14 +118,14 @@ class _HomePageState extends State<HomePage> {
                   delegate: SliverChildBuilderDelegate(
                     (context, index) {
                       final categoryTitles = [
-                        'Trending Now',
-                        'Popular on FlickTV',
-                        'Watch It Again',
-                        'New Releases',
-                        'My List',
-                        'Action & Adventure',
-                        'Comedies',
-                        'Documentaries',
+                        Strings.trendingNow,
+                        Strings.popularOnFlickTV,
+                        Strings.watchItAgain,
+                        Strings.newReleases,
+                        Strings.myList,
+                        Strings.actionAdventure,
+                        Strings.comedies,
+                        Strings.documentaries,
                       ];
                       final catIndex = index % categories.length;
                       final cat = categories[catIndex];
@@ -219,7 +242,7 @@ class _HomePageState extends State<HomePage> {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Text(
-                    'SERIES',
+                    Strings.series,
                     style: TextStyle(
                       fontSize: 12,
                       fontWeight: FontWeight.bold,
@@ -231,7 +254,7 @@ class _HomePageState extends State<HomePage> {
                 const SizedBox(height: 12),
                 // Featured Content Title
                 Text(
-                  featuredVideo?.title ?? 'Featured Content',
+                  featuredVideo?.title ?? Strings.featuredContent,
                   style: Theme.of(context).textTheme.displayMedium?.copyWith(
                     fontSize: 36,
                     fontWeight: FontWeight.bold,
@@ -283,7 +306,7 @@ class _HomePageState extends State<HomePage> {
                         },
                         icon: const Icon(Icons.play_arrow, color: Colors.black),
                         label: const Text(
-                          'Play',
+                          Strings.play,
                           style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -309,7 +332,7 @@ class _HomePageState extends State<HomePage> {
                         },
                         icon: const Icon(Icons.add, color: Colors.white),
                         label: const Text(
-                          'My List',
+                          Strings.myList,
                           style: TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
@@ -337,20 +360,20 @@ class _HomePageState extends State<HomePage> {
   }
 
   String _getVideoDescription(String? title) {
-    if (title == null) return 'Discover amazing content on FlickTV';
+    if (title == null) return Strings.discoverContent;
 
     // Generate Netflix-style descriptions based on title
     switch (title.toLowerCase()) {
       case 'big buck bunny':
-        return 'Follow the adventures of Big Buck Bunny in this heartwarming animated short film.';
+        return Strings.bigBuckBunnyDesc;
       case 'elephant dream':
-        return 'A surreal journey through a dreamlike world filled with mystery and wonder.';
+        return Strings.elephantDreamDesc;
       case 'for bigger blazes':
-        return 'An action-packed adventure that will keep you on the edge of your seat.';
+        return Strings.forBiggerBlazesDesc;
       case 'for bigger escape':
-        return 'A thrilling escape story with unexpected twists and turns.';
+        return Strings.forBiggerEscapeDesc;
       default:
-        return 'Experience premium entertainment with stunning visuals and captivating storytelling.';
+        return Strings.defaultVideoDesc;
     }
   }
 

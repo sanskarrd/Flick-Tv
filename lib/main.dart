@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/video_bloc.dart';
 import 'repository/local_repository.dart';
 import 'pages/splash_page.dart';
+import 'util/strings.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -20,7 +21,7 @@ class MyApp extends StatelessWidget {
       create: (_) => VideoBloc(repository: repo),
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        title: 'Flutter OTT Prototype',
+        title: Strings.appTitle,
         theme: ThemeData.dark().copyWith(
           scaffoldBackgroundColor:
               const Color(0xFF141414), // Netflix dark background

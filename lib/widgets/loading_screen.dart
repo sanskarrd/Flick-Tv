@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'flicktv_logo.dart';
+import '../util/strings.dart';
 
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
@@ -9,54 +11,32 @@ class LoadingScreen extends StatefulWidget {
 
 class _LoadingScreenState extends State<LoadingScreen>
     with TickerProviderStateMixin {
-  late AnimationController _logoController;
   late AnimationController _progressController;
-  late Animation<double> _logoAnimation;
   late Animation<double> _progressAnimation;
 
   @override
   void initState() {
     super.initState();
 
-    _logoController = AnimationController(
-      duration: const Duration(milliseconds: 1500),
-      vsync: this,
-    );
-
     _progressController = AnimationController(
       duration: const Duration(milliseconds: 2000),
       vsync: this,
     );
 
-    _logoAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _logoController,
-      curve: Curves.easeInOut,
-    ));
-
-    _progressAnimation = Tween<double>(
-      begin: 0.0,
-      end: 1.0,
-    ).animate(CurvedAnimation(
-      parent: _progressController,
-      curve: Curves.easeInOut,
-    ));
+    _progressAnimation = Tween<double>(begin: 0.0, end: 1.0).animate(
+      CurvedAnimation(parent: _progressController, curve: Curves.easeInOut),
+    );
 
     _startAnimations();
   }
 
   void _startAnimations() async {
-    await Future.delayed(const Duration(milliseconds: 300));
-    _logoController.forward();
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 800));
     _progressController.forward();
   }
 
   @override
   void dispose() {
-    _logoController.dispose();
     _progressController.dispose();
     super.dispose();
   }
@@ -83,62 +63,8 @@ class _LoadingScreenState extends State<LoadingScreen>
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Netflix-style FLICKTV Logo
-            AnimatedBuilder(
-              animation: _logoAnimation,
-              builder: (context, child) {
-                return Transform.scale(
-                  scale: _logoAnimation.value,
-                  child: Opacity(
-                    opacity: _logoAnimation.value,
-                    child: Column(
-                      children: [
-                        // Main Logo
-                        Text(
-                          'FLICKTV',
-                          style: TextStyle(
-                            fontSize: 56,
-                            fontWeight: FontWeight.bold,
-                            color: const Color(0xFFE50914),
-                            letterSpacing: 6,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withOpacity(0.8),
-                                blurRadius: 15,
-                                offset: const Offset(0, 6),
-                              ),
-                              Shadow(
-                                color: const Color(0xFFE50914).withOpacity(0.4),
-                                blurRadius: 25,
-                                offset: const Offset(0, 0),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        // Netflix-style subtitle
-                        Text(
-                          'Stream Unlimited Entertainment',
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w300,
-                            color: const Color(0xFFE5E5E5),
-                            letterSpacing: 1.5,
-                            shadows: [
-                              Shadow(
-                                color: Colors.black.withOpacity(0.6),
-                                blurRadius: 8,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                );
-              },
-            ),
+            // Netflix-style Animated FLICKTV Logo with custom image
+            const AnimatedFlickTVLogo(fontSize: 64, showSubtitle: true),
 
             const SizedBox(height: 100),
 
