@@ -1,5 +1,9 @@
 # FlickTV - Flutter OTT Streaming App
 
+<div align="center">
+  <img src="assets/logo/flick.png" alt="FlickTV Logo" width="100" height="100">
+</div>
+
 A Netflix-style streaming application built with Flutter, featuring a modern dark UI, video streaming capabilities, search functionality, and user profiles.
 
 ## 🛠 Tech Stack
@@ -66,6 +70,21 @@ lib/
 ├── widgets/                # Reusable widgets
 └── main.dart              # App entry point
 ```
+
+## 📱 Screenshots
+
+<div align="center">
+  <img src="docs/images/home_screen.png" alt="Home Screen" width="200">
+  <img src="docs/images/hero_banner.png" alt="Hero Banner" width="200">
+  <img src="docs/images/video_player.png" alt="Video Player" width="200">
+  <img src="docs/images/search_page.png" alt="Search Page" width="200">
+</div>
+
+### Features Showcase:
+- **Home Screen**: Netflix-style interface with multiple content carousels
+- **Hero Banner**: Featured content with play and "My List" options
+- **Video Player**: Custom player with unified controls and seek functionality
+- **Search**: Browse and search through all available content
 
 ## 🎯 Features
 
