@@ -1,0 +1,27 @@
+name: flutter_ott_assignment
+description: A prototype OTT app with Netflix-style home and reels-style player.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_bloc: ^8.1.3
+  equatable: ^2.0.3
+  video_player: ^2.5.1
+  chewie: ^1.4.2
+  cupertino_icons: ^1.0.5
+  http: ^1.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/data/videos.json

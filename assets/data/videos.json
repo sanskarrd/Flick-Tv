@@ -1,0 +1,38 @@
+{
+    "categories": [
+        {
+            "title": "Trending Now",
+            "videos": [
+                {
+                    "id": "1",
+                    "title": "Big Buck Bunny",
+                    "thumbnail": "https://picsum.photos/seed/bunny/400/600",
+                    "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                },
+                {
+                    "id": "2",
+                    "title": "Elephant Dream",
+                    "thumbnail": "https://picsum.photos/seed/elephant/400/600",
+                    "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4"
+                }
+            ]
+        },
+        {
+            "title": "Top Picks",
+            "videos": [
+                {
+                    "id": "3",
+                    "title": "For Bigger Blazes",
+                    "thumbnail": "https://picsum.photos/seed/fire/400/600",
+                    "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4"
+                },
+                {
+                    "id": "4",
+                    "title": "For Bigger Escape",
+                    "thumbnail": "https://picsum.photos/seed/escape/400/600",
+                    "video_url": "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4"
+                }
+            ]
+        }
+    ]
+}
