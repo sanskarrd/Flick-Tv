@@ -22,7 +22,20 @@ A Netflix-style streaming application built with Flutter, featuring a modern dar
 - **Android Studio**: Latest version with Android SDK
 - **Java**: JDK 17 or higher
 
-## 🚀 Installation
+## 📥 Download APK
+
+**Ready to try FlickTV? Download the latest release:**
+
+[![Download APK](https://img.shields.io/badge/Download-APK%20v1.0.0-red?style=for-the-badge&logo=android)](releases/FlickTV-v1.0.0-release.apk)
+
+- **File Size**: 22.8 MB
+- **Version**: 1.0.0
+- **Min Android**: API 21 (Android 5.0+)
+- **Target Android**: API 34 (Android 14)
+
+> **Note**: You may need to enable "Install from Unknown Sources" in your Android settings to install the APK.
+
+## 🚀 Development Setup
 
 ### 1. Clone the Repository
 ```bash
