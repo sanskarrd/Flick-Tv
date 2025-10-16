@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../bloc/video_bloc.dart';
-import '../bloc/video_event.dart';
 import '../bloc/video_state.dart';
 import '../widgets/horizontal_carousel.dart';
 import 'player_page.dart';
-import '../util/strings.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -39,16 +37,58 @@ class _HomePageState extends State<HomePage> {
             final categories = state.categories;
             return CustomScrollView(
               slivers: [
-                // Hero Banner Section
+                // Netflix-style App Bar with Logo
                 SliverAppBar(
-                  expandedHeight: 250,
-                  floating: false,
-                  pinned: false,
-                  backgroundColor: Colors.transparent,
-                  flexibleSpace: FlexibleSpaceBar(
-                    background: _buildHeroBanner(
-                        categories.isNotEmpty ? categories[0][0] : null),
+                  expandedHeight: 0,
+                  floating: true,
+                  pinned: true,
+                  snap: true,
+                  backgroundColor: const Color(0xFF141414),
+                  elevation: 0,
+                  flexibleSpace: Container(
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          const Color(0xFF141414),
+                          const Color(0xFF141414).withOpacity(0.0),
+                        ],
+                      ),
+                    ),
                   ),
+                  title: Row(
+                    children: [
+                      Text(
+                        'FLICKTV',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: const Color(0xFFE50914),
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        icon: const Icon(Icons.search, color: Colors.white),
+                        onPressed: () {
+                          // TODO: Implement search
+                        },
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.account_circle,
+                            color: Colors.white),
+                        onPressed: () {
+                          // TODO: Implement profile
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+                // Hero Banner Section
+                SliverToBoxAdapter(
+                  child: _buildHeroBanner(
+                      categories.isNotEmpty ? categories[0][0] : null),
                 ),
                 // Category Sections
                 SliverList(
@@ -56,8 +96,13 @@ class _HomePageState extends State<HomePage> {
                     (context, index) {
                       final categoryTitles = [
                         'Trending Now',
-                        'Top Picks for You',
-                        'Watch It Again'
+                        'Popular on FlickTV',
+                        'Watch It Again',
+                        'New Releases',
+                        'My List',
+                        'Action & Adventure',
+                        'Comedies',
+                        'Documentaries',
                       ];
                       final catIndex = index % categories.length;
                       final cat = categories[catIndex];
@@ -66,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                           : categoryTitles[index % categoryTitles.length];
 
                       return Padding(
-                        padding: const EdgeInsets.only(bottom: 24.0),
+                        padding: const EdgeInsets.only(bottom: 32.0),
                         child: HorizontalCarousel(
                           title: title,
                           videos: cat,
@@ -77,8 +122,12 @@ class _HomePageState extends State<HomePage> {
                         ),
                       );
                     },
-                    childCount: 3, // Show 3 categories
+                    childCount: 6, // Show more categories like Netflix
                   ),
+                ),
+                // Bottom padding
+                const SliverToBoxAdapter(
+                  child: SizedBox(height: 100),
                 ),
               ],
             );
@@ -90,20 +139,8 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget _buildHeroBanner(dynamic featuredVideo) {
-    return GestureDetector(
-      onTap: () {
-        if (featuredVideo != null) {
-          // Navigate to player with just the featured video
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (_) => PlayerPage(
-                videos: [featuredVideo],
-                initialIndex: 0,
-              ),
-            ),
-          );
-        }
-      },
+    return Container(
+      height: 500,
       child: Stack(
         fit: StackFit.expand,
         children: [
@@ -114,12 +151,21 @@ class _HomePageState extends State<HomePage> {
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
-                  color: const Color(0xFF1A1A1C),
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Color(0xFF2F2F2F),
+                        Color(0xFF141414),
+                      ],
+                    ),
+                  ),
                   child: const Center(
                     child: Icon(
                       Icons.movie,
-                      size: 64,
-                      color: Color(0xFFB3B3B3),
+                      size: 80,
+                      color: Color(0xFF8C8C8C),
                     ),
                   ),
                 );
@@ -129,17 +175,17 @@ class _HomePageState extends State<HomePage> {
             Container(
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                   colors: [
-                    Color(0xFF1A1A1C),
-                    Color(0xFF0E0E10),
+                    Color(0xFF2F2F2F),
+                    Color(0xFF141414),
                   ],
                 ),
               ),
             ),
 
-          // Gradient Overlay
+          // Netflix-style gradient overlay
           Container(
             decoration: const BoxDecoration(
               gradient: LinearGradient(
@@ -147,33 +193,140 @@ class _HomePageState extends State<HomePage> {
                 end: Alignment.bottomCenter,
                 colors: [
                   Colors.transparent,
-                  Color(0x80000000),
-                  Color(0xFF0E0E10),
+                  Color(0x66000000),
+                  Color(0xFF141414),
                 ],
-                stops: [0.0, 0.7, 1.0],
+                stops: [0.0, 0.6, 1.0],
               ),
             ),
           ),
 
           // Content Overlay
           Positioned(
-            left: 16,
-            right: 16,
-            bottom: 20,
+            left: 20,
+            right: 20,
+            bottom: 60,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // App Logo
-                Text(
-                  Strings.appOnly,
-                  style: Theme.of(context).textTheme.headlineMedium,
+                // Netflix-style "N" series badge
+                Container(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFE50914),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Text(
+                    'SERIES',
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                      letterSpacing: 1,
+                    ),
+                  ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: 12),
                 // Featured Content Title
                 Text(
-                  'Sci-Fi Thriller',
-                  style: Theme.of(context).textTheme.headlineLarge,
+                  featuredVideo?.title ?? 'Featured Content',
+                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                    fontSize: 36,
+                    fontWeight: FontWeight.bold,
+                    shadows: [
+                      Shadow(
+                        offset: const Offset(0, 2),
+                        blurRadius: 4,
+                        color: Colors.black.withOpacity(0.8),
+                      ),
+                    ],
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 8),
+                // Description
+                Text(
+                  _getVideoDescription(featuredVideo?.title),
+                  style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                    shadows: [
+                      Shadow(
+                        offset: const Offset(0, 1),
+                        blurRadius: 2,
+                        color: Colors.black.withOpacity(0.8),
+                      ),
+                    ],
+                  ),
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 20),
+                // Netflix-style action buttons
+                Row(
+                  children: [
+                    // Play button
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          if (featuredVideo != null) {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => PlayerPage(
+                                  videos: [featuredVideo],
+                                  initialIndex: 0,
+                                ),
+                              ),
+                            );
+                          }
+                        },
+                        icon: const Icon(Icons.play_arrow, color: Colors.black),
+                        label: const Text(
+                          'Play',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.white,
+                          foregroundColor: Colors.black,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    // My List button
+                    Expanded(
+                      child: ElevatedButton.icon(
+                        onPressed: () {
+                          // TODO: Add to my list functionality
+                        },
+                        icon: const Icon(Icons.add, color: Colors.white),
+                        label: const Text(
+                          'My List',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16,
+                          ),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF2F2F2F),
+                          foregroundColor: Colors.white,
+                          padding: const EdgeInsets.symmetric(vertical: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -181,6 +334,24 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
     );
+  }
+
+  String _getVideoDescription(String? title) {
+    if (title == null) return 'Discover amazing content on FlickTV';
+
+    // Generate Netflix-style descriptions based on title
+    switch (title.toLowerCase()) {
+      case 'big buck bunny':
+        return 'Follow the adventures of Big Buck Bunny in this heartwarming animated short film.';
+      case 'elephant dream':
+        return 'A surreal journey through a dreamlike world filled with mystery and wonder.';
+      case 'for bigger blazes':
+        return 'An action-packed adventure that will keep you on the edge of your seat.';
+      case 'for bigger escape':
+        return 'A thrilling escape story with unexpected twists and turns.';
+      default:
+        return 'Experience premium entertainment with stunning visuals and captivating storytelling.';
+    }
   }
 
   void _navigateToPlayer(BuildContext context, List<List> categories,

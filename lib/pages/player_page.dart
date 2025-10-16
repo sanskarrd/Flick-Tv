@@ -46,20 +46,22 @@ class _PlayerPageState extends State<PlayerPage> {
       showControls: true,
       allowFullScreen: true,
       allowPlaybackSpeedChanging: false,
-      showControlsOnInitialize: true,
-      hideControlsTimer: const Duration(seconds: 4),
+      showControlsOnInitialize: false,
+      hideControlsTimer: const Duration(seconds: 3),
       controlsSafeAreaMinimum: const EdgeInsets.only(
-        top: 60, // Space for back button
-        bottom: 40,
-        left: 16,
-        right: 16,
+        top: 80, // Space for back button and title
+        bottom: 60,
+        left: 20,
+        right: 20,
       ),
       materialProgressColors: ChewieProgressColors(
         playedColor: const Color(0xFFE50914),
         handleColor: const Color(0xFFE50914),
-        backgroundColor: const Color(0xFF1A1A1C),
+        backgroundColor: const Color(0xFF404040),
         bufferedColor: const Color(0xFF666666),
       ),
+      // Use default controls for now - will enhance later
+      // customControls: const NetflixControls(),
       errorBuilder: (context, errorMessage) => Container(
         color: Colors.black,
         child: Center(
@@ -69,25 +71,42 @@ class _PlayerPageState extends State<PlayerPage> {
               const Icon(
                 Icons.error_outline,
                 color: Color(0xFFE50914),
-                size: 64,
+                size: 80,
               ),
-              const SizedBox(height: 16),
+              const SizedBox(height: 24),
               Text(
                 'Unable to play video',
                 style: const TextStyle(
                   color: Colors.white,
-                  fontSize: 18,
+                  fontSize: 20,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              const SizedBox(height: 8),
-              Text(
-                errorMessage,
-                style: const TextStyle(
-                  color: Color(0xFFB3B3B3),
-                  fontSize: 14,
+              const SizedBox(height: 12),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 40),
+                child: Text(
+                  errorMessage,
+                  style: const TextStyle(
+                    color: Color(0xFFB3B3B3),
+                    fontSize: 16,
+                  ),
+                  textAlign: TextAlign.center,
                 ),
-                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 32),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFE50914),
+                  foregroundColor: Colors.white,
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 32, vertical: 12),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                ),
+                child: const Text('Go Back'),
               ),
             ],
           ),
@@ -149,18 +168,86 @@ class _PlayerPageState extends State<PlayerPage> {
                   ),
                 ),
 
-              // Back button overlay
+              // Netflix-style overlay with back button and video info
               Positioned(
-                top: MediaQuery.of(context).padding.top + 10,
-                left: 16,
+                top: 0,
+                left: 0,
+                right: 0,
                 child: Container(
+                  height: MediaQuery.of(context).padding.top + 80,
                   decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(20),
+                    gradient: LinearGradient(
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                      colors: [
+                        Colors.black.withOpacity(0.8),
+                        Colors.transparent,
+                      ],
+                    ),
                   ),
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.of(context).pop(),
+                  child: SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
+                      child: Row(
+                        children: [
+                          // Back button
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.arrow_back,
+                                  color: Colors.white, size: 24),
+                              onPressed: () => Navigator.of(context).pop(),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          // Video title
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text(
+                                  video.title,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                const SizedBox(height: 2),
+                                Text(
+                                  '${_currentIndex + 1} of ${widget.videos.length}',
+                                  style: const TextStyle(
+                                    color: Color(0xFFB3B3B3),
+                                    fontSize: 14,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          // More options button
+                          Container(
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.3),
+                              borderRadius: BorderRadius.circular(25),
+                            ),
+                            child: IconButton(
+                              icon: const Icon(Icons.more_vert,
+                                  color: Colors.white, size: 24),
+                              onPressed: () {
+                                // TODO: Show more options
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ),

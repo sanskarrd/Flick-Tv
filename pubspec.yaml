@@ -1,4 +1,4 @@
-name: flutter_ott_assignment
+name: flutter_ott
 description: A prototype OTT app with Netflix-style home and reels-style player.
 publish_to: 'none'
 version: 1.0.0+1

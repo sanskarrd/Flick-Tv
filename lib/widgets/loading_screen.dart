@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../util/strings.dart';
-
 class LoadingScreen extends StatefulWidget {
   const LoadingScreen({Key? key}) : super(key: key);
 
@@ -64,26 +62,28 @@ class _LoadingScreenState extends State<LoadingScreen>
   }
 
   String _getLoadingText(double progress) {
-    if (progress < 0.3) {
-      return 'Initializing FLIX TV...';
-    } else if (progress < 0.6) {
-      return 'Loading movie catalog...';
-    } else if (progress < 0.9) {
-      return 'Preparing your content...';
+    if (progress < 0.25) {
+      return 'Connecting to FlickTV...';
+    } else if (progress < 0.5) {
+      return 'Loading your personalized content...';
+    } else if (progress < 0.75) {
+      return 'Preparing your entertainment...';
+    } else if (progress < 0.95) {
+      return 'Almost ready to stream...';
     } else {
-      return 'Almost ready...';
+      return 'Welcome to FlickTV!';
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0E0E10),
+      backgroundColor: const Color(0xFF141414), // Netflix background
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // FLIX TV Logo
+            // Netflix-style FLICKTV Logo
             AnimatedBuilder(
               animation: _logoAnimation,
               builder: (context, child) {
@@ -95,34 +95,39 @@ class _LoadingScreenState extends State<LoadingScreen>
                       children: [
                         // Main Logo
                         Text(
-                          Strings.appOnly,
+                          'FLICKTV',
                           style: TextStyle(
-                            fontSize: 48,
+                            fontSize: 56,
                             fontWeight: FontWeight.bold,
                             color: const Color(0xFFE50914),
-                            letterSpacing: 4,
+                            letterSpacing: 6,
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(0.5),
-                                blurRadius: 10,
-                                offset: const Offset(0, 4),
+                                color: Colors.black.withOpacity(0.8),
+                                blurRadius: 15,
+                                offset: const Offset(0, 6),
+                              ),
+                              Shadow(
+                                color: const Color(0xFFE50914).withOpacity(0.4),
+                                blurRadius: 25,
+                                offset: const Offset(0, 0),
                               ),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 8),
-                        // Subtitle
+                        const SizedBox(height: 12),
+                        // Netflix-style subtitle
                         Text(
-                          'TV',
+                          'Stream Unlimited Entertainment',
                           style: TextStyle(
-                            fontSize: 24,
+                            fontSize: 18,
                             fontWeight: FontWeight.w300,
-                            color: Colors.white,
-                            letterSpacing: 8,
+                            color: const Color(0xFFE5E5E5),
+                            letterSpacing: 1.5,
                             shadows: [
                               Shadow(
-                                color: Colors.black.withOpacity(0.3),
-                                blurRadius: 5,
+                                color: Colors.black.withOpacity(0.6),
+                                blurRadius: 8,
                                 offset: const Offset(0, 2),
                               ),
                             ],
@@ -135,9 +140,9 @@ class _LoadingScreenState extends State<LoadingScreen>
               },
             ),
 
-            const SizedBox(height: 80),
+            const SizedBox(height: 100),
 
-            // Loading Progress Bar
+            // Netflix-style Loading Animation
             AnimatedBuilder(
               animation: _progressAnimation,
               builder: (context, child) {
@@ -145,52 +150,59 @@ class _LoadingScreenState extends State<LoadingScreen>
                   opacity: _progressAnimation.value,
                   child: Column(
                     children: [
-                      // Loading Text
-                      Text(
-                        _getLoadingText(_progressAnimation.value),
-                        style: TextStyle(
-                          color: const Color(0xFFB3B3B3),
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
+                      // Circular loading indicator
+                      SizedBox(
+                        width: 80,
+                        height: 80,
+                        child: Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            // Background circle
+                            Container(
+                              width: 80,
+                              height: 80,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: const Color(0xFF404040),
+                                  width: 3,
+                                ),
+                              ),
+                            ),
+                            // Progress circle
+                            SizedBox(
+                              width: 80,
+                              height: 80,
+                              child: CircularProgressIndicator(
+                                value: _progressAnimation.value,
+                                strokeWidth: 3,
+                                valueColor: const AlwaysStoppedAnimation<Color>(
+                                  Color(0xFFE50914),
+                                ),
+                                backgroundColor: Colors.transparent,
+                                strokeCap: StrokeCap.round,
+                              ),
+                            ),
+                            // Center play icon
+                            Icon(
+                              Icons.play_arrow_rounded,
+                              color: const Color(0xFFE50914),
+                              size: 32,
+                            ),
+                          ],
                         ),
                       ),
 
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 32),
 
-                      // Progress Bar Container
-                      Container(
-                        width: 280,
-                        height: 4,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFF1A1A1C),
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                        child: Stack(
-                          children: [
-                            // Progress Fill
-                            AnimatedContainer(
-                              duration: const Duration(milliseconds: 100),
-                              width: 280 * _progressAnimation.value,
-                              height: 4,
-                              decoration: BoxDecoration(
-                                gradient: const LinearGradient(
-                                  colors: [
-                                    Color(0xFFE50914),
-                                    Color(0xFFFF6B6B),
-                                  ],
-                                ),
-                                borderRadius: BorderRadius.circular(2),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: const Color(0xFFE50914)
-                                        .withOpacity(0.3),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
+                      // Loading Text
+                      Text(
+                        _getLoadingText(_progressAnimation.value),
+                        style: const TextStyle(
+                          color: Color(0xFFE5E5E5),
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.5,
                         ),
                       ),
 
@@ -200,9 +212,9 @@ class _LoadingScreenState extends State<LoadingScreen>
                       Text(
                         '${(_progressAnimation.value * 100).toInt()}%',
                         style: const TextStyle(
-                          color: Color(0xFFE50914),
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
+                          color: Color(0xFFB3B3B3),
+                          fontSize: 16,
+                          fontWeight: FontWeight.w300,
                         ),
                       ),
                     ],
