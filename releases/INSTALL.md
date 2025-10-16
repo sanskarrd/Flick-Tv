@@ -3,7 +3,7 @@
 ## 📱 How to Install FlickTV APK
 
 ### Step 1: Download the APK
-- Download `FlickTV-v1.0.0-release.apk` from this folder
+- Download `FlickTV-v1.0.1-release-fixed.apk` from this folder
 - File size: 22.8 MB
 
 ### Step 2: Enable Unknown Sources
